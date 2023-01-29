@@ -1,4 +1,7 @@
-import type CarsCollection from '../helpers/cars-collection';
+import CarsCollection from '../helpers/cars-collection';
+import cars from '../data/cars';
+import brands from '../data/brands';
+import models from '../data/models';
 
 class App {
   // private htmlElement: HTMLElement
@@ -8,9 +11,12 @@ class App {
   // private carsCollection: CarsCollection;
   private carsCollection: CarsCollection;
 
+// Sukurkite konstruktorių, kuris :
+// priimtų selektorių ir pagal jį rastą elementą priskirtų į htmlElement savybę
+// sukurtų pradinį carsCollection objektą
   constructor(selector: string) {
     const foundElement = document.querySelector<HTMLElement>(selector);
-
+    this.carsCollection = new CarsCollection({ cars, brands, models });
     if (foundElement === null) throw new Error(`Nerastas elementas su selektoriumi '${selector}'`);
 
     this.htmlElement = foundElement;
