@@ -12,18 +12,18 @@ type CarsCollectionProps = {
 class CarsCollection {
  private props: CarsCollectionProps;
 
- //Sukurkite konstruktorių, kuris priimtų markes, mašinas ir modelius. Gautus duomenis išsaugokite objekte
+ // Sukurkite konstruktorių, kuris priimtų markes, mašinas ir modelius. Gautus duomenis išsaugokite objekte
   
  constructor(props: CarsCollectionProps) {
     this.props = props;
   }
 
-  //Sukurkite privatų metodą joinCar kuris apjungtų vieną mašiną
+  // Sukurkite privatų metodą joinCar kuris apjungtų vieną mašiną
 
-  private joinCar = ({ model_id, ...car }: Car) => {
+  private joinCar = ({ modelId, ...car }: Car) => {
     const { brands, models } = this.props;
-    const carModel = models.find((model) => model.id === model_id);
-    const carBrand = brands.find((brand) => brand.id === carModel?.brand_id);
+    const carModel = models.find((model) => model.id === modelId);
+    const carBrand = brands.find((brand) => brand.id === carModel?.brandId);
 
     return {
       ...car,
@@ -32,7 +32,7 @@ class CarsCollection {
     };
   };
 
-  //Sukurkite metodą, kurį iškvietus gautumėte visas apjungtas mašinas.
+  // Sukurkite metodą, kurį iškvietus gautumėte visas apjungtas mašinas.
 
   public get allCars(): CarJoined[] {
     return this.props.cars.map(this.joinCar);
