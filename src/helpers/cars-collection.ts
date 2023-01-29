@@ -12,8 +12,7 @@ type CarsCollectionProps = {
 class CarsCollection {
  private props: CarsCollectionProps;
 
- // Sukurkite konstruktorių, kuris priimtų markes, mašinas ir modelius. Gautus duomenis išsaugokite objekte
-  
+ // Sukurkite konstruktorių, kuris priimtų markes, mašinas ir modelius.
  constructor(props: CarsCollectionProps) {
     this.props = props;
   }
