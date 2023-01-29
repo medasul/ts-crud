@@ -1,7 +1,7 @@
 {
   "name": "ts-crud",
   "version": "1.0.0",
-  "description": "",
+  "description": "Meda Šulskytė ts-crud project",
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.config.prod.js",
