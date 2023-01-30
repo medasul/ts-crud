@@ -74,6 +74,34 @@ public add = ({ modelId, brandId, ...carProps }: CarProps): void => {
 
   cars.push(newCar);
 };
+
+public update = (carId: string, { brandId, modelId, ...props }: CarProps) => {
+  const { cars, models, brands } = this.props;
+
+  const updatedCarIndex = cars.findIndex((c) => c.id === carId);
+  if (updatedCarIndex === -1) {
+    throw new Error(`Error: car does not exist with given ID: '${carId}'`);
+  }
+
+  const model = models.find((m) => m.id === modelId);
+  if (!model) {
+    throw new Error(`Error: car model does not exist with given ID: '${modelId}'`);
+  }
+
+  const brand = brands.find((b) => b.id === brandId);
+  if (!brand) {
+    throw new Error(`Error: car brand does not exist with given ID: '${brandId}'`);
+  }
+
+  const updatedCar: Car = {
+    ...cars[updatedCarIndex],
+    ...props,
+    modelId,
+  };
+
+  this.props.cars.splice(updatedCarIndex, 1, updatedCar);
+};
+
 }
 
 export default CarsCollection;

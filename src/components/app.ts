@@ -71,6 +71,7 @@ class App {
         year: '2000',
       },
       onSubmit: this.handleCreateCar,
+      isEdited: Boolean(this.editedCarId)
     });
   }
 
@@ -103,6 +104,8 @@ class App {
   };
 
   //
+
+
   private handleCarEdit = (carId: string) => {
     if (this.editedCarId === carId) {
       this.editedCarId = null;
@@ -112,6 +115,26 @@ class App {
     this.renderView();
   }
 
+  private handleUpdateCar = ({
+    brand, model, price, year,
+  }: Values): void => {
+    if (this.editedCarId) {
+      const carProps: CarProps = {
+        brandId: brand,
+        modelId: model,
+        price: Number(price),
+        year: Number(year),
+      };
+
+
+      this.carsCollection.update(this.editedCarId, carProps);
+      this.editedCarId = null;
+
+      this.renderView();
+    }
+  };
+
+  
   private renderView = () => {
     const { selectedBrandId, carsCollection, editedCarId } = this;
 
@@ -132,6 +155,8 @@ class App {
     }
   };
 
+  
+  
   public initialize = (): void => {
     const createContainer = document.createElement('div');
     createContainer.className = 'd-flex align-items-start';
@@ -145,12 +170,13 @@ class App {
   };
 
   private update = (): void => {
-    const { selectedBrandId, carsCollection } = this;
+    const { selectedBrandId, carsCollection, editedCarId } = this;
 
     if (selectedBrandId === null) {
       this.carTable.updateProps({
         title: 'Visi automobiliai',
         rowsData: carsCollection.allCars.map(stringifyProps),
+        editedCarId, 
       });
     } else {
       const brand = brands.find(b => b.id === selectedBrandId);
@@ -159,8 +185,52 @@ class App {
       this.carTable.updateProps({
         title: `${brand.title} markės automobiliai`,
         rowsData: carsCollection.getByBrandId(selectedBrandId).map(stringifyProps),
+        editedCarId, 
       });
     }
+
+    if (editedCarId) {
+      const editedCar = cars.find((c) => c.id === editedCarId);
+      if (!editedCar) {
+        console.error('Error! Car does not exist');
+        return;
+      }
+
+      const model = models.find((m) => m.id === editedCar.modelId);
+
+      if (!model) {
+        console.error('Error! Car does not exist');
+        return;
+      }
+
+      this.carForm.updateProps({
+        title: 'Edit vehicle',
+        submitBtnText: 'Update',
+        values: {
+          brand: model.brandId,
+          model: model.id,
+          price: String(editedCar.price),
+          year: String(editedCar.year),
+        },
+        isEdited: true,
+        onSubmit: this.handleUpdateCar,
+      });
+    } else {
+      const initialBrandId = brands[0].id;
+      this.carForm.updateProps({
+        title: 'Add new vehicle',
+        submitBtnText: 'Add',
+        values: {
+          brand: initialBrandId,
+          model: models.filter((m) => m.brandId === initialBrandId)[0].id,
+          price: '',
+          year: '',
+        },
+        isEdited: false,
+        onSubmit: this.handleCreateCar,
+      });
+    }
+    
   }
 
 }
