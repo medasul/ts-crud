@@ -247,14 +247,14 @@ class App {
     if (editedCarId) {
       const editedCar = cars.find((c) => c.id === editedCarId);
       if (!editedCar) {
-        console.error('Error! Car does not exist');
+        alert('Nėra rasta mašina kurią bandote redaguoti');
         return;
       }
 
       const model = models.find((m) => m.id === editedCar.modelId);
 
       if (!model) {
-        console.error('Error! Car does not exist');
+        alert('Nėra rasta mašina kurią bandote redaguoti');
         return;
       }
 

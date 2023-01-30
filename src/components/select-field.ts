@@ -35,6 +35,7 @@ class SelectField {
     this.initialize();
     this.renderView();
   }
+  
   private initialize = () => {
 
     const elementId = `select-${SelectField.instanceCounter}`;

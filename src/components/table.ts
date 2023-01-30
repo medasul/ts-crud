@@ -21,9 +21,10 @@ export type TableProps<Type> = {
   title: string,
   columns: Type,
   rowsData: Type[],
+  editedCarId: string | null,
   onDelete: (id: string) => void,
   onEdit: (id: string) => void,
-  editedCarId: string | null,
+  
 };
 
 class Table<Type extends RowData> {
@@ -96,7 +97,7 @@ class Table<Type extends RowData> {
         const rowHtmlElement = document.createElement('tr');
 
         if (editedCarId === rowData.id) {
-          rowHtmlElement.style.backgroundColor = '#C29FCF';
+          rowHtmlElement.style.backgroundColor = '#fff2cf';
         }
         const cellsHtmlString = Object.keys(columns)
           .map((key) => `<td>${rowData[key]}</td>`)
@@ -123,7 +124,8 @@ class Table<Type extends RowData> {
       this.thead,
       this.tbody,
     );
-  };
+    
+  }; 
 
   private renderView = (): void => {
     this.initialize();

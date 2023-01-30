@@ -50,21 +50,21 @@ class CarForm {
         this.fields = {
             brand: new SelectField({
               name: 'brand',
-              labelText: 'Brand',
+              labelText: 'Markė',
               options: brands.map(({ id, title }) => ({ title, value: id })),
             }),
             model: new SelectField({
               name: 'model',
-              labelText: 'Model',
+              labelText: 'Modelis',
               options: models.map(({ id, title }) => ({ title, value: id })),
             }),
             price: new TextField({
               name: 'price',
-              labelText: 'Price',
+              labelText: 'Kaina',
             }),
             year: new TextField({
               name: 'year',
-              labelText: 'Year',
+              labelText: 'Metai',
             }),
           };
 
