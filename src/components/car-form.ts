@@ -26,10 +26,6 @@ export type Fields = {
 
 class CarForm {
     private props: CarFormProps;
-    private brand: SelectField;
-    private model: SelectField;
-    private price: TextField;
-    private years: TextField;
     private fields: Fields;
 
     private htmlFormHeader: HTMLHeadingElement;
@@ -46,24 +42,27 @@ class CarForm {
         this.htmlFormHeader = document.createElement('h2');
         this.htmlsubmitBtnText = document.createElement('button');
 
-        this.brand = new SelectField({
-            name: 'brand',
-            labelText: 'Car brand',
-            options: brands.map(({ id, title }) => ({ title, value: id })),
-          });
-          this.model = new SelectField({
-            name: 'model',
-            labelText: 'Car Model',
-            options: models.map(({ id, title }) => ({ title, value: id })),
-          });
-          this.price = new TextField({
-            name: 'price',
-            labelText: 'Car Price',
-          });
-          this.years = new TextField({
-            name: 'year',
-            labelText: 'Car Year',
-          }),
+        this.fields = {
+            brand: new SelectField({
+              name: 'brand',
+              labelText: 'Brand',
+              options: brands.map(({ id, title }) => ({ title, value: id })),
+            }),
+            model: new SelectField({
+              name: 'model',
+              labelText: 'Model',
+              options: models.map(({ id, title }) => ({ title, value: id })),
+            }),
+            price: new TextField({
+              name: 'price',
+              labelText: 'Price',
+            }),
+            year: new TextField({
+              name: 'year',
+              labelText: 'Year',
+            }),
+          };
+          
           this.initialize();
           this.renderView();
     }

@@ -3,6 +3,15 @@ import type Model from '../types/model';
 import type Brand from '../types/brand';
 import type CarJoined from '../types/car-joined';
 
+const randomizedID = (): string => String(Math.floor(Math.random() * 256));
+
+export type CarProps = {
+  brandId: string;
+  modelId: string;
+  price: number;
+  year: number;
+};
+
 type CarsCollectionProps = {
   cars: Car[],
   brands: Brand[],
@@ -50,6 +59,20 @@ class CarsCollection {
 
 public deleteCarById = (carId: string): void => {
   this.props.cars = this.props.cars.filter((car) => car.id !== carId);
+};
+
+public add = ({ modelId, brandId, ...carProps }: CarProps): void => {
+  const { models, brands, cars } = this.props;
+  const model = models.find((m) => m.id === modelId);
+  const brand = brands.find((b) => b.id === brandId);
+
+  if (!model || !brand) {
+    throw new Error('Neteisingi duomenys');
+  }
+
+  const newCar: Car = { id: randomizedID(), ...carProps, modelId };
+
+  cars.push(newCar);
 };
 }
 
