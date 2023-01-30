@@ -32,8 +32,11 @@ class Table<Type extends RowData> {
 // private thead: HTMLTableSectionElement;
 
   public htmlElement: HTMLTableElement;
+  
   private props: TableProps<Type>;
+
   private tbody: HTMLTableSectionElement;
+
   private thead: HTMLTableSectionElement;
 
 
