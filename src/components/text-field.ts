@@ -1,5 +1,5 @@
 //1
- type TextFieldProps = {
+ export type TextFieldProps = {
     labelText: string,
     name: string,
     value?: string,
