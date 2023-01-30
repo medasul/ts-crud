@@ -75,7 +75,22 @@ class Table<Type extends RowData> {
     }
   };
 
-  private initializeHead = (): void => {
+  private initialize = (): void => {
+    this.htmlElement.className = 'table table-dark table-striped order border p-3';
+    this.htmlElement.append(
+      this.thead,
+      this.tbody,
+    );
+
+    this.renderView();
+  };
+
+  private renderView = (): void => {
+    this.renderHeadView();
+    this.renderBodyView();
+  };
+
+  private renderHeadView = (): void => {
     const { title, columns } = this.props;
 
     const headersArray = Object.values(columns);
@@ -89,49 +104,30 @@ class Table<Type extends RowData> {
     `;
   };
 
-  private initializeBody = (): void => {
+  private renderBodyView = (): void => {
     const { rowsData, columns, editedCarId } = this.props;
     this.tbody.innerHTML = '';
     const rowsHtmlElements = rowsData
       .map((rowData) => {
-        const rowHtmlElement = document.createElement('tr');
+        const tr = document.createElement('tr');
 
         if (editedCarId === rowData.id) {
-          rowHtmlElement.style.backgroundColor = '#fff2cf';
+          tr.style.backgroundColor = '#fff2cf';
         }
         const cellsHtmlString = Object.keys(columns)
           .map((key) => `<td>${rowData[key]}</td>`)
           .join(' ');
 
-        rowHtmlElement.innerHTML = cellsHtmlString;
-        this.addActionsCell(rowHtmlElement, rowData.id);
-        return rowHtmlElement;
+          tr.innerHTML = cellsHtmlString;
+        this.addActionsCell(tr, rowData.id);
+        return tr;
       });
 
     this.tbody.append(...rowsHtmlElements);
   };
 
-  // Sukurtite metodą initialize, kuriame:
-  // atliktumete lentelės antraštės atvaizdavimą
-  // atliktumetė lentelės duomenų eilučių atvaizdavimą
-  // apjungtumėte elementus
-  private initialize = (): void => {
-    this.initializeHead();
-    this.initializeBody();
 
-    this.htmlElement.className = 'table table-striped table-bordered border-grey p-3 table-dark table-sm';
-    this.htmlElement.append(
-      this.thead,
-      this.tbody,
-    );
-    
-  }; 
-
-  private renderView = (): void => {
-    this.initialize();
-  };
-
-  private addActionsCell = (rowHtmlElement: HTMLTableRowElement, id: string): void => {
+  private addActionsCell = (tr: HTMLTableRowElement, id: string) => {
     const { onDelete, onEdit, editedCarId } = this.props;
 
     const buttonCell = document.createElement('td');
@@ -144,21 +140,21 @@ class Table<Type extends RowData> {
     updateButton.innerHTML = isCancelButton ? 'Cancel' : 'Update Car';
     updateButton.className = `btn btn-${isCancelButton ? 'dark' : 'info'}`;
         updateButton.style.width = '40 px';
-        updateButton.addEventListener('Click', () => onEdit(id));
+        updateButton.addEventListener('click', () => onEdit(id));
 
 
     const deleteButton = document.createElement('button');
     deleteButton.type = 'button';
     deleteButton.innerHTML = 'Delete';
     deleteButton.className = 'btn btn-danger';
-    deleteButton.addEventListener('click', () => onDelete(id));
     deleteButton.style.width = '80px';
+    deleteButton.addEventListener('click', () => onDelete(id));
 
     buttonCell.append(
+      updateButton,
       deleteButton,
-      updateButton
     );
-    rowHtmlElement.append(buttonCell);
+    tr.append(buttonCell);
   };
 
   public updateProps = (newProps: Partial<TableProps<Type>>): void => {
