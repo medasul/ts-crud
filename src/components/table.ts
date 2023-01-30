@@ -119,6 +119,15 @@ public constructor(props: TableProps<Type>) {
       this.tbody,
     );
   };
+  
+  private renderView = (): void => {
+    this.initialize();
+  };
+
+  public updateProps = (newProps: Partial<TableProps<Type>>): void => {
+    this.props = { ...this.props, ...newProps };
+    this.renderView();
+  };
 }
 
 export default Table;
