@@ -27,14 +27,18 @@ export type Fields = {
 
 class CarForm {
     private props: CarFormProps;
+
     private fields: Fields;
 
     private htmlFormHeader: HTMLHeadingElement;
+
     private htmlFieldsContainer: HTMLDivElement;
+
     private htmlsubmitBtnText: HTMLButtonElement;
 
     public htmlElement: HTMLFormElement;
-    //3. constructor
+    // 3. constructor
+
     public constructor(props: CarFormProps) {
         this.props = props;
 
@@ -95,21 +99,18 @@ class CarForm {
         onSubmit(formValues);
       };
 
-    private initialize = (): void => {
-        this.htmlFormHeader.className = 'h3 text-center';
-    
-        const fieldsArr = Object.values(this.fields);
-        this.htmlFieldsContainer.className = 'd-flex flex-column gap-2';
-        this.htmlFieldsContainer.append(...fieldsArr.map((field) => field.htmlElement));
-    
-        this.htmlsubmitBtnText.className = 'btn btn-primary';
-    
-        this.htmlElement.className = 'card d-flex flex-column gap-3 p-3';
-        this.htmlElement.append(
-          this.htmlFormHeader,
-          this.htmlFieldsContainer,
-          this.htmlsubmitBtnText,
-        );}
+   private initialize = (): void => {
+    this.htmlFormHeader.className = 'h5 text-center';
+
+    const fieldsArr = Object.values(this.fields);
+    this.htmlFieldsContainer.className = 'd-flex flex-column gap-2';
+    this.htmlFieldsContainer.append(...fieldsArr.map((field) => field.htmlElement));
+
+    this.htmlsubmitBtnText.className = 'btn btn-primary';
+
+    this.htmlElement.className = 'card d-flex flex-column gap-3 p-3';
+    this.htmlElement.append(this.htmlFormHeader, this.htmlFieldsContainer, this.htmlsubmitBtnText);
+  };
 
         private renderView = (): void => {
             const { title, values, submitBtnText, isEdited } = this.props;
@@ -125,7 +126,7 @@ class CarForm {
                 this.htmlsubmitBtnText.classList.add('btn-success');
                 this.htmlsubmitBtnText.classList.remove('btn-warning');
               }
-              
+
             this.htmlFormHeader.innerHTML = title;
         
             this.htmlsubmitBtnText.innerHTML = submitBtnText;
