@@ -1,8 +1,8 @@
 ## TypeScript CRUD Aplikacija
 
-Šios aplikacijos funkcionalumas leidžia vartotojui atlikti filtravimo, pridėjimo, ištrynimo, redagavimo ir atnaujinimo veiksmus.
+Šios aplikacijos funkcionalumas leidžia vartotojui atlikti filtravimo, pridėjimo, ištrinimo, redagavimo ir atnaujinimo veiksmus.
 
-
+![Alt text](/functionality.gif "Features and usage")
 
 ### Programos funkcionalumui reikia:
 
