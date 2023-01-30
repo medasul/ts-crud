@@ -22,18 +22,20 @@ export type TableProps<Type> = {
   columns: Type,
   rowsData: Type[],
   onDelete: (id: string) => void,
+  onEdit: (id: string) => void,
+  editedCarId: string | null,
 };
 
 class Table<Type extends RowData> {
 
   // Sukurkite savybes
-// public htmlElement: HTMLTableElement;
-// private props: TableProps;
-// private tbody: HTMLTableSectionElement;
-// private thead: HTMLTableSectionElement;
+  // public htmlElement: HTMLTableElement;
+  // private props: TableProps;
+  // private tbody: HTMLTableSectionElement;
+  // private thead: HTMLTableSectionElement;
 
   public htmlElement: HTMLTableElement;
-  
+
   private props: TableProps<Type>;
 
   private tbody: HTMLTableSectionElement;
@@ -41,10 +43,10 @@ class Table<Type extends RowData> {
   private thead: HTMLTableSectionElement;
 
 
- // Sukurkite konstruktorių, kuris:
-// sukurtų pradinius htmlElement, thead ir tbody elementus iškviestų metodą initialize
-  
-public constructor(props: TableProps<Type>) {
+  // Sukurkite konstruktorių, kuris:
+  // sukurtų pradinius htmlElement, thead ir tbody elementus iškviestų metodą initialize
+
+  public constructor(props: TableProps<Type>) {
     this.props = props;
     this.checkColumnsCompatability();
 
@@ -87,18 +89,21 @@ public constructor(props: TableProps<Type>) {
   };
 
   private initializeBody = (): void => {
-    const { rowsData, columns } = this.props;
+    const { rowsData, columns, editedCarId } = this.props;
     this.tbody.innerHTML = '';
     const rowsHtmlElements = rowsData
       .map((rowData) => {
         const rowHtmlElement = document.createElement('tr');
 
+        if (editedCarId === rowData.id) {
+          rowHtmlElement.style.backgroundColor = '#C29FCF';
+        }
         const cellsHtmlString = Object.keys(columns)
           .map((key) => `<td>${rowData[key]}</td>`)
           .join(' ');
 
         rowHtmlElement.innerHTML = cellsHtmlString;
-        this.addActionsCell(rowHtmlElement, rowData.id); 
+        this.addActionsCell(rowHtmlElement, rowData.id);
         return rowHtmlElement;
       });
 
@@ -106,9 +111,9 @@ public constructor(props: TableProps<Type>) {
   };
 
   // Sukurtite metodą initialize, kuriame:
-// atliktumete lentelės antraštės atvaizdavimą
-// atliktumetė lentelės duomenų eilučių atvaizdavimą
-// apjungtumėte elementus
+  // atliktumete lentelės antraštės atvaizdavimą
+  // atliktumetė lentelės duomenų eilučių atvaizdavimą
+  // apjungtumėte elementus
   private initialize = (): void => {
     this.initializeHead();
     this.initializeBody();
@@ -119,15 +124,26 @@ public constructor(props: TableProps<Type>) {
       this.tbody,
     );
   };
-  
+
   private renderView = (): void => {
     this.initialize();
   };
 
   private addActionsCell = (rowHtmlElement: HTMLTableRowElement, id: string): void => {
-    const { onDelete } = this.props;
+    const { onDelete, onEdit, editedCarId } = this.props;
 
     const buttonCell = document.createElement('td');
+
+    buttonCell.className = 'd-flex justify-content-center gap-3'
+
+    const isCancelButton = editedCarId === id;
+    const updateButton = document.createElement('button');
+    updateButton.type = 'button';
+    updateButton.innerHTML = isCancelButton ? 'Cancel' : 'Update Car';
+    updateButton.className = `btn btn-${isCancelButton ? 'dark' : 'info'}`;
+        updateButton.style.width = '40 px';
+        updateButton.addEventListener('Click', () => onEdit(id));
+
 
     const deleteButton = document.createElement('button');
     deleteButton.type = 'button';
@@ -136,7 +152,10 @@ public constructor(props: TableProps<Type>) {
     deleteButton.addEventListener('click', () => onDelete(id));
     deleteButton.style.width = '80px';
 
-    buttonCell.append(deleteButton);
+    buttonCell.append(
+      deleteButton,
+      updateButton
+    );
     rowHtmlElement.append(buttonCell);
   };
 

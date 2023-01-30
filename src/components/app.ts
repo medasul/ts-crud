@@ -23,6 +23,9 @@ class App {
   private carTable: Table<StringifyObjectProps<CarJoined>>;
 
   private carForm: CarForm;
+
+  private editedCarId: string | null;
+
   // Sukurkite konstruktorių, kuris :
   // priimtų selektorių ir pagal jį rastą elementą priskirtų į htmlElement savybę
   // sukurtų pradinį carsCollection objektą
@@ -31,7 +34,7 @@ class App {
     if (foundElement === null) throw new Error(`Nerastas elementas su selektoriumi '${selector}'`);
     this.htmlElement = foundElement;
     this.carsCollection = new CarsCollection({ cars, brands, models });
-
+    this.editedCarId = null;
 
     this.carTable = new Table({
       title: 'Visi automobiliai',
@@ -44,12 +47,14 @@ class App {
       },
       rowsData: this.carsCollection.allCars.map(stringifyProps),
       onDelete: this.handleCarDelete,
+      onEdit: this.handleCarEdit,
+      editedCarId: this.editedCarId,
     });
 
     this.brandSelect = new SelectField({
       labelText: 'Markė',
       options: brands.map(({ id, title }) => ({ title, value: id })),
-      onChange: this.handleBrandChange
+      onChange: this.handleBrandChange,
     });
 
     this.selectedBrandId = null;
@@ -57,13 +62,13 @@ class App {
     const initialBrandId = brands[0].id;
 
     this.carForm = new CarForm({
-      title: "Sukurkite naują automobilį",
-      submitBtnText: "Sukurti",
+      title: 'Sukurkite naują automobilį',
+      submitBtnText: 'Sukurti',
       values: {
         brand: initialBrandId,
         model: models.filter((m) => m.brandId === initialBrandId)[0].id,
-        price: "0",
-        year: "2000",
+        price: '0',
+        year: '2000',
       },
       onSubmit: this.handleCreateCar,
     });
@@ -98,13 +103,21 @@ class App {
   };
 
   //
-
+  private handleCarEdit = (carId: string) => {
+    if (this.editedCarId === carId) {
+      this.editedCarId = null;
+    } else {
+      this.editedCarId = carId;
+    }
+    this.renderView();
+  }
 
   private renderView = () => {
-    const { selectedBrandId, carsCollection } = this;
+    const { selectedBrandId, carsCollection, editedCarId } = this;
 
     if (selectedBrandId === null) {
       this.carTable.updateProps({
+        editedCarId,
         title: 'Visi automobiliai',
         rowsData: carsCollection.allCars.map(stringifyProps),
       });
