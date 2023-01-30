@@ -42,6 +42,7 @@ class App {
         price: 'Kaina',
       },
       rowsData: this.carsCollection.allCars.map(stringifyProps),
+      onDelete: this.handleCarDelete,
     });
 
     this.brandSelect = new SelectField({
@@ -59,6 +60,12 @@ class App {
     this.update();
   }
 
+  private handleCarDelete = (carId: string): void => {
+    this.carsCollection.deleteCarById(carId);
+  
+    this.update();
+  }
+  
   public initialize = (): void => {
     const container = document.createElement('div');
     container.className = 'container my-4 d-flex  flex-column gap-3';
